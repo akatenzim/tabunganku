@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <title>Tabunganku | AnandaCode</title>
+  </head>
+  <body>
+    <div id="app">
+      <div class="container">
+        <div class="greeting-container" v-if="state">
+          <div class="welcome-message">{{ welcomeMessage() }}</div>
+          <div class="btn-section" @click="toFirstInput">Klik</div>
+        </div>
+
+        <div class="form" v-if="!state && secBtnClicked">
+          <label>{{ firstQuest() }} </label>
+          <div class="form-input">
+            <input
+              type="text"
+              v-model.trim.lazy="firstInput"
+              placeholder="tidak perlu pakai titik"
+            />
+            <button type="submit" @click="firstGenerate">Add</button>
+          </div>
+          <div class="show-error" v-if="showError">{{ error }}</div>
+        </div>
+
+        <div class="form" v-if="!state && firstCompleted">
+          <label for="second">{{ secondQuest() }}</label>
+          <div class="form-input">
+            <input id="second" type="text" v-model.trim.lazy="secondInput" />
+            <button type="submit" @click="secondGenerate">Add</button>
+          </div>
+          <div class="show-error" v-if="showError">{{ error }}</div>
+        </div>
+
+        <div class="is-days" v-if="!state && secondCompleted">
+          <div>Kamu butuh {{ daysResult }} hari untuk menyelesaikannya</div>
+          <button class="start-progress" @click="startProgress">
+            Mulai progressnya
+          </button>
+        </div>
+
+        <div id="days" class="days" v-if="!state && daysCalculated">
+          <div
+            v-for="(day, index) in arrayDays"
+            :key="day"
+            @click="e => e.target.classList.toggle('completed')"
+          >
+            {{ day }}
+          </div>
+        </div>
+        <button
+          v-if="!state && daysCalculated"
+          class="btn-save"
+          @click="saveProgress"
+        >
+          Save progress
+        </button>
+        <p class="para" v-if="!state && daysCalculated" @click="saveProgress">
+          Jangan di refresh ya atau progress akan hilang :)
+        </p>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="/src/script.js"></script>
+  </body>
+</html>
